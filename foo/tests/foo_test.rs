@@ -1,7 +1,6 @@
-use crate::common::setup_foo;
 use foo::foobar;
+use common::setup_foo;
 
-pub mod common;
 
 #[test]
 fn foo_test() {

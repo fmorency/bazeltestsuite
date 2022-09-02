@@ -1,40 +1,24 @@
-load("@crate_index//:defs.bzl", "aliases", "all_crate_deps")
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test_suite")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test", "rust_test_suite")
 
 rust_binary(
     name = "foo",
     srcs = glob(include=["src/**/*.rs"]),
-    aliases = aliases(),
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-    ),
-    deps = all_crate_deps(
-        normal = True,
-    ),
 )
 
 rust_library(
     name = "foo-lib",
     srcs = glob(include=["src/**/*.rs"]),
     crate_name = "foo",
-    aliases = aliases(),
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-    ),
-    deps = all_crate_deps(
-        normal = True,
-    ),
+)
+
+rust_library(
+    name = "foo-test-common",
+    srcs = ["tests/common/mod.rs"],
+    crate_name = "common",
 )
 
 rust_test_suite(
-    name = "foo-test",
-    srcs = glob(include=["tests/**/*.rs"]),
-    proc_macro_deps = all_crate_deps(
-        proc_macro = True,
-        proc_macro_dev = True,
-    ),
-    deps = all_crate_deps(
-        normal = True,
-        normal_dev = True,
-    ) + [":foo-lib"]
+    name = "foo-test-suite",
+    srcs = glob(include=["tests/foo_test.rs"]),
+    deps = [":foo-lib", ":foo-test-common"]
 )
