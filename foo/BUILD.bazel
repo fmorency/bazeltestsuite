@@ -11,14 +11,9 @@ rust_library(
     crate_name = "foo",
 )
 
-rust_library(
-    name = "foo-test-common",
-    srcs = ["tests/common/mod.rs"],
-    crate_name = "common",
-)
-
 rust_test_suite(
     name = "foo-test-suite",
-    srcs = glob(include=["tests/foo_test.rs"]),
-    deps = [":foo-lib", ":foo-test-common"]
+    srcs = glob(include=["tests/*.rs"]),
+    compile_data = ["tests/common/mod.rs"],
+    deps = [":foo-lib"]
 )
